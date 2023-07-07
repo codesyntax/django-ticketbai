@@ -19,4 +19,24 @@ def get_prev_invoice():
     return invoice
 
 
-def store_invoice(invoice_struct, result):
+def store_invoice(invoice_struct, result, email=None):
+    import pdb
+
+    pdb.set_trace()
+    lines = invoice_struct.pop("lines")
+    invoice = Invoice(**invoice_struct)
+    if email:
+        invoice.email = email
+    invoice.save()
+    for line in lines:
+        invoiceline = InvoiceLine(**line)
+        invoiceline.invoice = invoice
+        invoiceline.save()
+
+    if result["TBAI_ID"]:
+        invoice.tbai_code = result["TBAI_ID"]
+        invoice.csv_code = result["CSV"]
+        invoice.signedxml = result["SignedXML"]
+    else:
+        invoice.errorxml = result["ResponseXML"]
+    invoice.save()

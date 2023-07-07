@@ -41,9 +41,7 @@ class Invoice(models.Model):
     description = models.CharField(max_length=255)
     simplified = models.CharField(max_length=2, default=N)
     substitution = models.CharField(max_length=2, default=N)
-    user = models.ForeignKey(
-        User, null=True, blank=True, on_delete=models.SET_NULL
-    )
+    email = models.EmailField(null=True, blank=True)
     vat_regime = models.CharField(max_length=2, default=DEFAULT_VAT)
     total_amount = models.DecimalField(
         default=0, max_digits=7, decimal_places=2
@@ -54,6 +52,7 @@ class Invoice(models.Model):
     tbai_code = models.CharField(max_length=40, null=True, blank=True)
     csv_code = models.CharField(max_length=40, null=True, blank=True)
     signedxml = models.TextField(null=True, blank=True)
+    errorxml = models.TextField(null=True, blank=True)
     pdf = models.FileField(
         upload_to="ticketbai",
         null=True,

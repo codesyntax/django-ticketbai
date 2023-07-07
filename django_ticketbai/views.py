@@ -16,26 +16,30 @@ from .models import Config, Invoice, InvoiceLine
 TICKETBAI_CONF = getattr(settings, "TICKETBAI_CONF", None)
 
 # TODO: TPV connection and TBai creation
-def send_and_store_invoice(request):
+def send_and_store_invoice(request, description, num=None):
     if not TICKETBAI_CONF:
         return None
     config = Config.objects.filter(is_active=True).first()
     serial_code = calculate_serial_code()
-    num = 0
-
-    prev_invoice = get_prev_invoice()
-    if prev_invoice:
-        num = prev_invoice.num + 1
+    if not num:
+        num = 0
+        prev_invoice = get_prev_invoice()
+        if prev_invoice:
+            num = prev_invoice.num + 1
     tbai = TBai(TICKETBAI_CONF)
     invoice = tbai.create_invoice(
-        serial_code, num, "description", simplified="S"
+        serial_code, num, "Simplified invoice", simplified="S"
     )
-    for line in lines:
-        invoice.create_line(
-            "First product", Decimal("1"), Decimal("200"), Decimal("20")
-        )
+    # TODO: One or more lines to iterate
+    invoice.create_line(
+        "Product description", Decimal("1"), Decimal("200"), Decimal("20")
+    )
 
-    result = tbai.sign_and_send(config.pks12.name, config.password)
-    invoice_struct = json.load(tbai.get_json())
-    store_invoice(invoice_struct, result)
+    result = tbai.sign_and_send(
+        invoice,
+        "{}/{}".format(settings.MEDIA_ROOT, config.pks12.name),
+        config.password,
+    )
+    tbai_struct = json.loads(tbai.get_json(invoice))
+    store_invoice(tbai_struct["invoice"], result, "uodriozola@codesyntax.com")
     return True

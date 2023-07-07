@@ -26,7 +26,7 @@ class InvoiceAdmin(admin.ModelAdmin):
     list_display = (
         "expedition_date",
         "get_name",
-        "user",
+        "email",
         "simplified",
         "substitution",
         "vat_regime",
@@ -42,7 +42,15 @@ class InvoiceAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             _("Basic"),
-            {"fields": ("serial_code", "num", "description", "total_amount")},
+            {
+                "fields": (
+                    "serial_code",
+                    "num",
+                    "description",
+                    "total_amount",
+                    "email",
+                )
+            },
         ),
         (
             _("Dates"),
@@ -69,11 +77,11 @@ class InvoiceAdmin(admin.ModelAdmin):
         ),
     )
 
-    def has_add_permission(self, request, obj=None):
-        return False
+    # def has_add_permission(self, request, obj=None):
+    #     return False
 
-    def has_delete_permission(self, request, obj=None):
-        return False
+    # def has_delete_permission(self, request, obj=None):
+    #     return False
 
 
 if settings.TICKETBAI_CONF:
