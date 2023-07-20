@@ -73,7 +73,15 @@ class InvoiceAdmin(admin.ModelAdmin):
         ),
         (
             _("TicketBai"),
-            {"fields": ("tbai_code", "csv_code", "pdf", "signedxml")},
+            {
+                "fields": (
+                    "tbai_code",
+                    "csv_code",
+                    "pdf",
+                    "signedxml",
+                    "errorxml",
+                )
+            },
         ),
     )
 

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="eu" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+    <meta charset="utf-8"> <!-- utf-8 works for most cases -->
+</head>
+
+<body>
+    <center>
+        <p style="font-size: 8pt;">
+            {{subject_name}}<br>
+            IFZ: {{entity_id}}
+        </p>
+
+    </center>
+    <hr>
+    <span>{{invoice.expedition_date}} - {{invoice.expedition_time}}</span>
+    <span class="right">Faktura sinp.: {{invoice.serial_code}}/{{invoice.num}}</span>
+    <hr>
+    <table style="font-size: 6pt;">
+        <tr>
+            <th>Kop.</th>
+            <th>Deskribapena</th>
+            <th>Unitatea</th>
+            <th>Deskontua</th>
+            <th>Guztira</th>
+        </tr>
+        <tr class="invoice_lines">
+            {% for line in invoice.get_lines %}
+            <td>{{line.quantity}}</td>
+            <td>{{line.description}}</td>
+            <td>{{line.unit_amount}}</td>
+            <td>{% if line.discount %}%{{line.discount}}{% endif %}</td>
+            <td>{{line.vat_base}}</td>
+            {% endfor %}
+        </tr>
+    </table>
+    <hr>
+    <div style="font-size: 10pt;">
+    <span><strong>Guztira BEZ barne</strong></span><span class="right"><strong>{{invoice.total_amount}} €</strong></span>
+    </div>
+    </br>
+    </br>
+    <p>
+        <span>BEZ<span>
+
+    </p>
+    <hr>
+    <center style="font-size: 9pt;">
+        <strong>ESKERRIK ASKO</strong>
+    </center>
+    <hr>
+    <center>
+        <p><strong style="font-size: 7pt;">{{tbai_id}}</strong></p>
+        <img src="data:image/jpeg;base64,{{qr_base64}}"/>
+    </center>
+</body>
+</html>

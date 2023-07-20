@@ -64,6 +64,12 @@ class Invoice(models.Model):
     def get_name(self):
         return "{}/{}".format(self.serial_code, self.num)
 
+    def get_pdf_name(self):
+        return "{}_{}".format(self.serial_code, self.num)
+
+    def get_lines(self):
+        return self.lines.all()
+
     def __str__(self):
         return self.get_name()
 
@@ -73,7 +79,9 @@ class Invoice(models.Model):
 
 
 class InvoiceLine(models.Model):
-    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
+    invoice = models.ForeignKey(
+        Invoice, on_delete=models.CASCADE, related_name="lines"
+    )
     description = models.CharField(max_length=255)
     quantity = models.DecimalField(default=0, max_digits=7, decimal_places=2)
     unit_amount = models.DecimalField(

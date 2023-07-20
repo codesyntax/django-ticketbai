@@ -1,4 +1,5 @@
 import json
+from django.http import JsonResponse
 from pytbai import TBai
 from decimal import Decimal
 from django.shortcuts import render
@@ -41,5 +42,7 @@ def send_and_store_invoice(request, description, num=None):
         config.password,
     )
     tbai_struct = json.loads(tbai.get_json(invoice))
-    store_invoice(tbai_struct["invoice"], result, "uodriozola@codesyntax.com")
-    return True
+    stored_invoice = store_invoice(
+        tbai_struct, result, "uodriozola@codesyntax.com"
+    )
+    return JsonResponse({"response": "OK", "test": "OK"}, status=201)

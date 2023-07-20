@@ -1,6 +1,8 @@
 from django.conf import settings
+from django.core.files.base import ContentFile
 from django.utils import timezone
 from django_ticketbai.models import Config, Invoice, InvoiceLine
+from django_ticketbai.utils.pdf import build_pdf
 
 
 def calculate_serial_code():
@@ -19,10 +21,8 @@ def get_prev_invoice():
     return invoice
 
 
-def store_invoice(invoice_struct, result, email=None):
-    import pdb
-
-    pdb.set_trace()
+def store_invoice(tbai_struct, result, email=None):
+    invoice_struct = tbai_struct["invoice"]
     lines = invoice_struct.pop("lines")
     invoice = Invoice(**invoice_struct)
     if email:
@@ -37,6 +37,11 @@ def store_invoice(invoice_struct, result, email=None):
         invoice.tbai_code = result["TBAI_ID"]
         invoice.csv_code = result["CSV"]
         invoice.signedxml = result["SignedXML"]
+        invoice.save()
+        pdf = build_pdf(invoice, result["TBAI_ID"], tbai_struct["subject"])
+        invoice.pdf = ContentFile(pdf, "{}.pdf".format(invoice.get_pdf_name()))
     else:
         invoice.errorxml = result["ResponseXML"]
+
     invoice.save()
+    return invoice
