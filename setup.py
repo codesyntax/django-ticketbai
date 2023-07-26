@@ -29,6 +29,7 @@ setup(
         "pytbai",
         "qrcode==7.4.2",
         "weasyprint==59.0",
+        "crc8==0.2.0",
     ],
     classifiers=[
         "Intended Audience :: Developers",

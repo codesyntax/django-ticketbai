@@ -89,6 +89,8 @@ class Invoice(models.Model):
     def get_name(self):
         return "{}/{}".format(self.serial_code, self.num)
 
+    get_name.short_description = _("Serie")
+
     def get_pdf_name(self):
         return "{}_{}".format(self.serial_code, self.num)
 

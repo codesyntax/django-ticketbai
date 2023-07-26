@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.conf import settings
 from .models import Invoice, InvoiceLine, Config
+from .forms import ConfigForm
 from django.utils.translation import gettext as _
 
 
@@ -15,6 +16,7 @@ class ConfigAdmin(admin.ModelAdmin):
             {"fields": ("pks12", "password")},
         ),
     )
+    form = ConfigForm
 
 
 class InvoiceLines(admin.TabularInline):
