@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-26 14:54+0200\n"
-"PO-Revision-Date: 2023-07-26 13:09+0000\n"
+"PO-Revision-Date: 2023-07-26 13:18+0000\n"
 "Last-Translator: Weblate Admin <weblate@codesyntax.eus>\n"
 "Language-Team: Basque <https://weblate.codesyntax.com/projects/"
 "django-ticketbai/pdf-ticket/eu/>\n"
@@ -184,7 +184,7 @@ msgstr "Faktura lerroak"
 
 #: django_ticketbai/templates/PDF/ticketbai.html:18
 msgid "Simp. Invoice:"
-msgstr "Faktura sinp."
+msgstr "Faktura sinp.:"
 
 #: django_ticketbai/templates/PDF/ticketbai.html:22
 msgid "Quan."
@@ -209,9 +209,11 @@ msgstr "ESKERRIK ASKO"
 #: django_ticketbai/validators.py:11
 msgid "Unsupported file extension. Only PDF files are accepted."
 msgstr ""
-"Fitxategi formatua ez da bateragarria. PDF fitxategiak bakarrik onartzen dira"
+"Fitxategi formatua ez da bateragarria. PDF fitxategiak bakarrik onartzen "
+"dira."
 
 #: django_ticketbai/validators.py:20
 msgid "Unsupported file extension. Only p12 files are accepted."
 msgstr ""
-"Fitxategi formatua ez da bateragarria. p12 fitxategiak bakarrik onartzen dira"
+"Fitxategi formatua ez da bateragarria. p12 fitxategiak bakarrik onartzen "
+"dira."
