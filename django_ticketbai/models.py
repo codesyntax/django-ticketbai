@@ -10,8 +10,10 @@ VAT_TYPE_CHOICES = ((row, row) for row in L11)
 
 
 class Config(models.Model):
-    prefix = models.CharField(max_length=5)
-    suffix = models.CharField(max_length=5, null=True, blank=True)
+    prefix = models.CharField(max_length=5, verbose_name=_("Prefix"))
+    suffix = models.CharField(
+        max_length=5, null=True, blank=True, verbose_name=_("Suffix")
+    )
     pks12 = models.FileField(
         upload_to="certs",
         null=True,
@@ -19,8 +21,10 @@ class Config(models.Model):
         verbose_name=_("Certificate"),
         validators=[validate_pks_extension],
     )
-    password = models.CharField(max_length=200, null=True, blank=True)
-    is_active = models.BooleanField(default=True)
+    password = models.CharField(
+        max_length=200, null=True, blank=True, verbose_name=_("Password")
+    )
+    is_active = models.BooleanField(default=True, verbose_name=_("Is active"))
 
     def save(self, *args, **kwargs):
         super(Config, self).save(*args, **kwargs)
@@ -36,23 +40,44 @@ class Config(models.Model):
 
 
 class Invoice(models.Model):
-    serial_code = models.CharField(max_length=20)
-    num = models.IntegerField()
-    description = models.CharField(max_length=255)
-    simplified = models.CharField(max_length=2, default=N)
-    substitution = models.CharField(max_length=2, default=N)
-    email = models.EmailField(null=True, blank=True)
-    vat_regime = models.CharField(max_length=2, default=DEFAULT_VAT)
-    total_amount = models.DecimalField(
-        default=0, max_digits=7, decimal_places=2
+    serial_code = models.CharField(
+        max_length=20, verbose_name=_("Serial code")
     )
-    expedition_date = models.DateField()
-    expedition_time = models.TimeField()
-    transaction_date = models.DateField()
-    tbai_code = models.CharField(max_length=40, null=True, blank=True)
-    csv_code = models.CharField(max_length=40, null=True, blank=True)
-    signedxml = models.TextField(null=True, blank=True)
-    errorxml = models.TextField(null=True, blank=True)
+    num = models.IntegerField(verbose_name=_("Number"))
+    description = models.CharField(
+        max_length=255, verbose_name=_("Description")
+    )
+    simplified = models.CharField(
+        max_length=2, default=N, verbose_name=_("Simplified")
+    )
+    substitution = models.CharField(
+        max_length=2, default=N, verbose_name=_("Substitution")
+    )
+    email = models.EmailField(null=True, blank=True, verbose_name=_("Email"))
+    vat_regime = models.CharField(
+        max_length=2, default=DEFAULT_VAT, verbose_name=_("VAT regime")
+    )
+    total_amount = models.DecimalField(
+        default=0,
+        max_digits=7,
+        decimal_places=2,
+        verbose_name=_("Total amount"),
+    )
+    expedition_date = models.DateField(verbose_name=_("Expedition date"))
+    expedition_time = models.TimeField(verbose_name=_("Expedition time"))
+    transaction_date = models.DateField(verbose_name=_("Transaction date"))
+    tbai_code = models.CharField(
+        max_length=40, null=True, blank=True, verbose_name=_("TicketBai code")
+    )
+    csv_code = models.CharField(
+        max_length=40, null=True, blank=True, verbose_name=_("CSV")
+    )
+    signedxml = models.TextField(
+        null=True, blank=True, verbose_name=_("Signed XML")
+    )
+    errorxml = models.TextField(
+        null=True, blank=True, verbose_name=_("Error XML")
+    )
     pdf = models.FileField(
         upload_to="ticketbai",
         null=True,
@@ -82,21 +107,42 @@ class InvoiceLine(models.Model):
     invoice = models.ForeignKey(
         Invoice, on_delete=models.CASCADE, related_name="lines"
     )
-    description = models.CharField(max_length=255)
-    quantity = models.DecimalField(default=0, max_digits=7, decimal_places=2)
-    unit_amount = models.DecimalField(
-        default=0, max_digits=7, decimal_places=2
+    description = models.CharField(
+        max_length=255, verbose_name=_("Description")
     )
-    discount = models.DecimalField(default=0, max_digits=4, decimal_places=2)
+    quantity = models.DecimalField(
+        default=0, max_digits=7, decimal_places=2, verbose_name=_("Quantity")
+    )
+    unit_amount = models.DecimalField(
+        default=0,
+        max_digits=7,
+        decimal_places=2,
+        verbose_name=_("Unit Amount"),
+    )
+    discount = models.DecimalField(
+        default=0, max_digits=4, decimal_places=2, verbose_name=_("Discount")
+    )
     vat_rate = models.DecimalField(
-        default=DEFAULT_VAT_RATE, max_digits=4, decimal_places=2
+        default=DEFAULT_VAT_RATE,
+        max_digits=4,
+        decimal_places=2,
+        verbose_name=_("VAT rate"),
     )
     vat_type = models.CharField(
-        max_length=2, choices=VAT_TYPE_CHOICES, default=S1
+        max_length=2,
+        choices=VAT_TYPE_CHOICES,
+        default=S1,
+        verbose_name=_("VAT type"),
     )
-    vat_base = models.DecimalField(default=0, max_digits=7, decimal_places=2)
-    vat_fee = models.DecimalField(default=0, max_digits=7, decimal_places=2)
-    total = models.DecimalField(default=0, max_digits=7, decimal_places=2)
+    vat_base = models.DecimalField(
+        default=0, max_digits=7, decimal_places=2, verbose_name=_("VAT base")
+    )
+    vat_fee = models.DecimalField(
+        default=0, max_digits=7, decimal_places=2, verbose_name=_("VAT fee")
+    )
+    total = models.DecimalField(
+        default=0, max_digits=7, decimal_places=2, verbose_name=_("Total")
+    )
 
     def __str__(self):
         return "{} {}".format(self.invoice.get_name(), self.description)
