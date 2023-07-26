@@ -1,7 +1,8 @@
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="eu" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<html lang="{{LANGUAGE_CODE}}" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
-    <meta charset="utf-8"> <!-- utf-8 works for most cases -->
+    <meta charset="utf-8">
 </head>
 
 <body>
@@ -14,15 +15,15 @@
     </center>
     <hr>
     <span>{{invoice.expedition_date}} - {{invoice.expedition_time}}</span>
-    <span class="right">Faktura sinp.: {{invoice.serial_code}}/{{invoice.num}}</span>
+    <span class="right">{% trans "Simp. Invoice:" %} {{invoice.serial_code}}/{{invoice.num}}</span>
     <hr>
     <table style="font-size: 6pt;">
         <tr>
-            <th>Kop.</th>
-            <th>Deskribapena</th>
-            <th>Unitatea</th>
-            <th>Deskontua</th>
-            <th>Guztira</th>
+            <th>{% trans "Quan." %}</th>
+            <th>{% trans "Description" %}</th>
+            <th>{% trans "Unit" %}</th>
+            <th>{% trans "Discount" %}</th>
+            <th>{% trans "Total" %}</th>
         </tr>
         <tr class="invoice_lines">
             {% for line in invoice.get_lines %}
@@ -36,17 +37,17 @@
     </table>
     <hr>
     <div style="font-size: 10pt;">
-    <span><strong>Guztira BEZ barne</strong></span><span class="right"><strong>{{invoice.total_amount}} €</strong></span>
+    <span><strong>{% trans "Total VAT included" %}</strong></span><span class="right"><strong>{{invoice.total_amount}} €</strong></span>
     </div>
     </br>
     </br>
     <p>
-        <span>BEZ<span>
+        <span>{% trans "VAT" %}<span>
 
     </p>
     <hr>
     <center style="font-size: 9pt;">
-        <strong>ESKERRIK ASKO</strong>
+        <strong>{% trans "THANK YOU" %}</strong>
     </center>
     <hr>
     <center>

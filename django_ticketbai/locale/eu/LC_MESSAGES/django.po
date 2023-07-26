@@ -1,0 +1,114 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-07-26 10:39+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: django_ticketbai/admin.py:10
+msgid "Invoice serial code"
+msgstr "Faktura serie kodea"
+
+#: django_ticketbai/admin.py:14 django_ticketbai/models.py:19
+msgid "Certificate"
+msgstr "Zertifikatua"
+
+#: django_ticketbai/admin.py:44
+msgid "Basic"
+msgstr "Oinarrizkoa"
+
+#: django_ticketbai/admin.py:56
+msgid "Dates"
+msgstr "Datak"
+
+#: django_ticketbai/admin.py:65
+msgid "Detail"
+msgstr "Xehetasuna"
+
+#: django_ticketbai/admin.py:75
+msgid "TicketBai"
+msgstr "TicketBai"
+
+#: django_ticketbai/models.py:34
+msgid "Configuration"
+msgstr "Konfigurazioa"
+
+#: django_ticketbai/models.py:35
+msgid "Configurations"
+msgstr "Konfigurazioak"
+
+#: django_ticketbai/models.py:60
+msgid "PDF file"
+msgstr "PDF fitxategia"
+
+#: django_ticketbai/models.py:77
+msgid "Invoice"
+msgstr "Faktura"
+
+#: django_ticketbai/models.py:78
+msgid "Invoices"
+msgstr "Fakturak"
+
+#: django_ticketbai/models.py:105
+msgid "Invoice Line"
+msgstr "Faktura lerroa"
+
+#: django_ticketbai/models.py:106
+msgid "Invoice lines"
+msgstr "Faktura lerroak"
+
+#: django_ticketbai/templates/PDF/ticketbai.html:18
+msgid "Simp. Invoice:"
+msgstr "Faktura sinp."
+
+#: django_ticketbai/templates/PDF/ticketbai.html:22
+msgid "Quan."
+msgstr "Kop."
+
+#: django_ticketbai/templates/PDF/ticketbai.html:23
+msgid "Description"
+msgstr "Deskribapena"
+
+#: django_ticketbai/templates/PDF/ticketbai.html:24
+msgid "Unit"
+msgstr "Unitatea"
+
+#: django_ticketbai/templates/PDF/ticketbai.html:25
+msgid "Discount"
+msgstr "Deskontua"
+
+#: django_ticketbai/templates/PDF/ticketbai.html:26
+msgid "Total"
+msgstr "Guztira"
+
+#: django_ticketbai/templates/PDF/ticketbai.html:40
+msgid "Total VAT included"
+msgstr "Guztira BEZ barne"
+
+#: django_ticketbai/templates/PDF/ticketbai.html:45
+msgid "VAT"
+msgstr "BEZ"
+
+#: django_ticketbai/templates/PDF/ticketbai.html:50
+msgid "THANK YOU"
+msgstr "ESKERRIK ASKO"
+
+#: django_ticketbai/validators.py:11
+msgid "Unsupported file extension. Only PDF files are accepted."
+msgstr "Fitxategi formatua ez da bateragarria. PDF fitxategiak bakarrik onartzen dira"
+
+#: django_ticketbai/validators.py:20
+msgid "Unsupported file extension. Only p12 files are accepted."
+msgstr "Fitxategi formatua ez da bateragarria. p12 fitxategiak bakarrik onartzen dira"
