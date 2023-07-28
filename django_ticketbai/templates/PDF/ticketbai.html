@@ -42,8 +42,14 @@
     </br>
     </br>
     <p>
-        <span>{% trans "VAT" %}<span>
-
+        <span>{% trans "VAT" %}<span><br>
+        {% for breakdown in invoice.get_vat_breakdown %}
+            {% for vat_type in breakdown %}
+                {% for rate in vat_type.rates.items %}
+                <span>{{rate.1.base}}}</span> oinarriaren </span><span>%{{rate.0}}</span> <span>{{rate.1.fee}}</span>
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
     </p>
     <hr>
     <center style="font-size: 9pt;">
@@ -51,7 +57,7 @@
     </center>
     <hr>
     <center>
-        <p><strong style="font-size: 7pt;">{{tbai_id}}</strong></p>
+        <p><strong style="font-size: 7pt;">{{invoice.tbai_code}}</strong></p>
         <img src="data:image/jpeg;base64,{{qr_base64}}"/>
     </center>
 </body>

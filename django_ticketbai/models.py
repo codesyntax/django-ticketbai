@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
+import xml.etree.ElementTree as ET
+import json
 from pytbai.definitions import DEFAULT_VAT, N, DEFAULT_VAT_RATE, S1, L11
 from django.db import models
 from django.utils.translation import gettext as _
 from .validators import validate_pdf_extension, validate_pks_extension
 from django.conf import settings
+
 
 User = settings.AUTH_USER_MODEL
 VAT_TYPE_CHOICES = ((row, row) for row in L11)
@@ -63,6 +66,7 @@ class Invoice(models.Model):
         decimal_places=2,
         verbose_name=_("Total amount"),
     )
+    vat_breakdown = models.TextField(verbose_name=_("VAT breakdown"))
     expedition_date = models.DateField(verbose_name=_("Expedition date"))
     expedition_time = models.TimeField(verbose_name=_("Expedition time"))
     transaction_date = models.DateField(verbose_name=_("Transaction date"))
@@ -71,6 +75,12 @@ class Invoice(models.Model):
     )
     csv_code = models.CharField(
         max_length=40, null=True, blank=True, verbose_name=_("CSV")
+    )
+    signature_value = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        verbose_name=_("Signature Value"),
     )
     signedxml = models.TextField(
         null=True, blank=True, verbose_name=_("Signed XML")
@@ -85,6 +95,13 @@ class Invoice(models.Model):
         verbose_name=_("PDF file"),
         validators=[validate_pdf_extension],
     )
+    pre_invoice = models.ForeignKey(
+        "self",
+        null=True,
+        blank=True,
+        verbose_name=_("Previous invoice"),
+        on_delete=models.SET_NULL,
+    )
 
     def get_name(self):
         return "{}/{}".format(self.serial_code, self.num)
@@ -96,6 +113,21 @@ class Invoice(models.Model):
 
     def get_lines(self):
         return self.lines.all()
+
+    def get_vat_breakdown(self):
+        return json.loads(self.vat_breakdown)
+
+    def save(self, *args, **kwargs):
+        if self.signedxml:
+            root = ET.fromstring(self.signedxml)
+            signature = root.find(
+                "{http://www.w3.org/2000/09/xmldsig#}Signature"
+            )
+            signaturevalue = signature.find(
+                "{http://www.w3.org/2000/09/xmldsig#}SignatureValue"
+            )
+            self.signature_value = signaturevalue.text[:100]
+        super(Invoice, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.get_name()

@@ -7,11 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-26 14:54+0200\n"
+"POT-Creation-Date: 2023-07-28 08:47+0200\n"
 "PO-Revision-Date: 2023-07-26 13:18+0000\n"
 "Last-Translator: Weblate Admin <weblate@codesyntax.eus>\n"
-"Language-Team: Basque <https://weblate.codesyntax.com/projects/"
-"django-ticketbai/pdf-ticket/eu/>\n"
+"Language-Team: Basque <https://weblate.codesyntax.com/projects/django-"
+"ticketbai/pdf-ticket/eu/>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,166 +19,175 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.14.1\n"
 
-#: django_ticketbai/admin.py:10
+#: django_ticketbai/admin.py:11
 msgid "Invoice serial code"
 msgstr "Faktura serie kodea"
 
-#: django_ticketbai/admin.py:14 django_ticketbai/models.py:21
+#: django_ticketbai/admin.py:15 django_ticketbai/models.py:23
 msgid "Certificate"
 msgstr "Zertifikatua"
 
-#: django_ticketbai/admin.py:44
+#: django_ticketbai/admin.py:31
+msgid "Has signature  "
+msgstr "Sinadura du"
+
+#: django_ticketbai/admin.py:53
 msgid "Basic"
 msgstr "Oinarrizkoa"
 
-#: django_ticketbai/admin.py:56
+#: django_ticketbai/admin.py:65
 msgid "Dates"
 msgstr "Datak"
 
-#: django_ticketbai/admin.py:65
+#: django_ticketbai/admin.py:74
 msgid "Detail"
 msgstr "Xehetasuna"
 
-#: django_ticketbai/admin.py:75
-msgid "TicketBai"
-msgstr "TicketBai"
-
-#: django_ticketbai/models.py:13
+#: django_ticketbai/models.py:15
 msgid "Prefix"
 msgstr "Aurrizkia"
 
-#: django_ticketbai/models.py:15
+#: django_ticketbai/models.py:17
 msgid "Suffix"
 msgstr "Atzizkia"
 
-#: django_ticketbai/models.py:25
+#: django_ticketbai/models.py:27
 msgid "Password"
 msgstr "Pasahitza"
 
-#: django_ticketbai/models.py:27
+#: django_ticketbai/models.py:29
 msgid "Is active"
 msgstr "Aktibo dago"
 
-#: django_ticketbai/models.py:38
+#: django_ticketbai/models.py:40
 msgid "Configuration"
 msgstr "Konfigurazioa"
 
-#: django_ticketbai/models.py:39
+#: django_ticketbai/models.py:41
 msgid "Configurations"
 msgstr "Konfigurazioak"
 
-#: django_ticketbai/models.py:44
+#: django_ticketbai/models.py:46
 msgid "Serial code"
 msgstr "Serie kodea"
 
-#: django_ticketbai/models.py:46
+#: django_ticketbai/models.py:48
 msgid "Number"
 msgstr "Zenbakia"
 
-#: django_ticketbai/models.py:48 django_ticketbai/models.py:111
+#: django_ticketbai/models.py:50 django_ticketbai/models.py:133
 #: django_ticketbai/templates/PDF/ticketbai.html:23
 msgid "Description"
 msgstr "Deskribapena"
 
-#: django_ticketbai/models.py:51
+#: django_ticketbai/models.py:53
 msgid "Simplified"
 msgstr "Sinplifikatua"
 
-#: django_ticketbai/models.py:54
+#: django_ticketbai/models.py:56
 msgid "Substitution"
 msgstr "Ordezkapena"
 
-#: django_ticketbai/models.py:56
+#: django_ticketbai/models.py:58
 msgid "Email"
 msgstr "Eposta"
 
-#: django_ticketbai/models.py:58
+#: django_ticketbai/models.py:60
 msgid "VAT regime"
 msgstr "BEZ erregimena"
 
-#: django_ticketbai/models.py:64
+#: django_ticketbai/models.py:66
 msgid "Total amount"
 msgstr "Guztira"
 
-#: django_ticketbai/models.py:66
+#: django_ticketbai/models.py:68
 msgid "Expedition date"
 msgstr "Jaulkipen data"
 
-#: django_ticketbai/models.py:67
+#: django_ticketbai/models.py:69
 msgid "Expedition time"
 msgstr "Jaulkipen ordua"
 
-#: django_ticketbai/models.py:68
+#: django_ticketbai/models.py:70
 msgid "Transaction date"
 msgstr "Eragiketa data"
 
-#: django_ticketbai/models.py:70
+#: django_ticketbai/models.py:72
 msgid "TicketBai code"
 msgstr "TicketBai kodea"
 
-#: django_ticketbai/models.py:73
+#: django_ticketbai/models.py:75
 msgid "CSV"
 msgstr "CSV"
 
-#: django_ticketbai/models.py:76
+#: django_ticketbai/models.py:81
+msgid "Signature Value"
+msgstr "Sinadura balioa"
+
+#: django_ticketbai/models.py:84
 msgid "Signed XML"
 msgstr "Sinatutako XMLa"
 
-#: django_ticketbai/models.py:79
+#: django_ticketbai/models.py:87
 msgid "Error XML"
 msgstr "Errore XMLa"
 
-#: django_ticketbai/models.py:85
+#: django_ticketbai/models.py:93
 msgid "PDF file"
 msgstr "PDF fitxategia"
 
-#: django_ticketbai/models.py:102
+#: django_ticketbai/models.py:100
+#| msgid "Serial code"
+msgid "Serie"
+msgstr "Seriea"
+
+#: django_ticketbai/models.py:124
 msgid "Invoice"
 msgstr "Faktura"
 
-#: django_ticketbai/models.py:103
+#: django_ticketbai/models.py:125
 msgid "Invoices"
 msgstr "Fakturak"
 
-#: django_ticketbai/models.py:114
+#: django_ticketbai/models.py:136
 msgid "Quantity"
 msgstr "Kopurua"
 
-#: django_ticketbai/models.py:120
+#: django_ticketbai/models.py:142
 msgid "Unit Amount"
 msgstr "Unitatea"
 
-#: django_ticketbai/models.py:123
+#: django_ticketbai/models.py:145
 #: django_ticketbai/templates/PDF/ticketbai.html:25
 msgid "Discount"
 msgstr "Deskontua"
 
-#: django_ticketbai/models.py:129
+#: django_ticketbai/models.py:151
 msgid "VAT rate"
 msgstr "BEZ ratioa"
 
-#: django_ticketbai/models.py:135
+#: django_ticketbai/models.py:157
 msgid "VAT type"
 msgstr "BEZ mota"
 
-#: django_ticketbai/models.py:138
+#: django_ticketbai/models.py:160
 msgid "VAT base"
 msgstr "BEZ oinarria"
 
-#: django_ticketbai/models.py:141
+#: django_ticketbai/models.py:163
 msgid "VAT fee"
 msgstr "BEZ tasa"
 
-#: django_ticketbai/models.py:144
+#: django_ticketbai/models.py:166
 #: django_ticketbai/templates/PDF/ticketbai.html:26
 msgid "Total"
 msgstr "Guztira"
 
-#: django_ticketbai/models.py:151
+#: django_ticketbai/models.py:173
 msgid "Invoice Line"
 msgstr "Faktura lerroa"
 
-#: django_ticketbai/models.py:152
+#: django_ticketbai/models.py:174
 msgid "Invoice lines"
 msgstr "Faktura lerroak"
 
@@ -205,6 +214,22 @@ msgstr "BEZ"
 #: django_ticketbai/templates/PDF/ticketbai.html:50
 msgid "THANK YOU"
 msgstr "ESKERRIK ASKO"
+
+#: django_ticketbai/templates/admin/django_ticketbai/app_index.html:7
+msgid "About us"
+msgstr "Honi buruz"
+
+#: django_ticketbai/templates/admin/django_ticketbai/app_index.html:9
+msgid "Software"
+msgstr "Softwarea"
+
+#: django_ticketbai/templates/admin/django_ticketbai/app_index.html:10
+msgid "Version"
+msgstr "Bertsioa"
+
+#: django_ticketbai/templates/admin/django_ticketbai/app_index.html:11
+msgid "Developer"
+msgstr "Garatzailea"
 
 #: django_ticketbai/validators.py:11
 msgid "Unsupported file extension. Only PDF files are accepted."

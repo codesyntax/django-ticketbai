@@ -1,0 +1,13 @@
+{% extends "admin/app_index.html" %}
+{% load i18n %}
+
+{% block content %}
+{{block.super}}
+
+<h2>{% trans 'About us' %}</h2>
+<ul>
+    <li><strong>{% trans 'Software' %}:</strong> django-ticketbai</li>
+    <li><strong>{% trans 'Version' %}:</strong> 1.0</li>
+    <li><strong>{% trans 'Developer' %}:</strong> CodeSyntax (B20696092)</li>
+</ul>
+{% endblock %}

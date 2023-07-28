@@ -15,10 +15,10 @@ def get_crc8_url(url):
     return url
 
 
-def create_qr_base64(invoice, tbai_id, subject):
+def create_qr_base64(invoice, subject):
     request = PreparedRequest()
     params = {
-        "id": tbai_id,
+        "id": invoice.tbai_code,
         "s": invoice.serial_code,
         "nf": invoice.num,
         "i": invoice.total_amount,
@@ -41,22 +41,19 @@ def get_css_string():
     return css
 
 
-def get_html_string(invoice, tbai_id, subject):
+def get_html_string(invoice, subject):
     t = template.loader.get_template("PDF/ticketbai.html")
     context = {
-        "qr_base64": create_qr_base64(invoice, tbai_id, subject).decode(
-            "utf-8"
-        ),
+        "qr_base64": create_qr_base64(invoice, subject).decode("utf-8"),
         "subject_name": subject["name"],
         "entity_id": subject["entity_id"],
         "invoice": invoice,
-        "tbai_id": tbai_id,
     }
     html = t.render(context)
     return html
 
 
-def build_pdf(invoice, tbai_id, subject):
+def build_pdf(invoice, subject):
     css = CSS(string=get_css_string())
-    html = HTML(string=get_html_string(invoice, tbai_id, subject))
+    html = HTML(string=get_html_string(invoice, subject))
     return html.write_pdf(stylesheets=[css])
