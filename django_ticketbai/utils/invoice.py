@@ -63,29 +63,63 @@ def create_tbai_code(invoice, subject):
     return tbai_code
 
 
-def store_invoice(tbai_struct, result, email=None):
-    invoice_struct = tbai_struct["invoice"]
-    subject_struct = tbai_struct["subject"]
-    lines = invoice_struct.pop("lines")
-    invoice = Invoice(**invoice_struct)
+def store_invoice(tbai, tbai_invoice, prev_invoice=None, email=None):
+    tbai_json = json.loads(tbai.get_json(tbai_invoice))
+    invoice_json = tbai_json["invoice"]
+    subject_json = tbai_json["subject"]
+    lines = invoice_json.pop("lines")
+    invoice = Invoice(**invoice_json)
     if email:
         invoice.email = email
-    invoice.vat_breakdown = json.dumps(invoice_struct["vat_breakdown"])
+    invoice.vat_breakdown = json.dumps(invoice_json["vat_breakdown"])
     invoice.save()
     for line in lines:
         invoiceline = InvoiceLine(**line)
         invoiceline.invoice = invoice
         invoiceline.save()
 
-    if result["TBAI_ID"]:
-        invoice.csv_code = result["CSV"]
-        invoice.signedxml = result["SignedXML"]
-        invoice.tbai_code = result["TBAI_ID"]
+    if prev_invoice:
+        invoice.pre_invoice = prev_invoice
         invoice.save()
-        pdf = build_pdf(invoice, subject_struct)
-        invoice.pdf = ContentFile(pdf, "{}.pdf".format(invoice.get_pdf_name()))
+
+    invoice = Invoice.objects.get(id=invoice.id)
+    invoice.save()
+    return invoice
+
+def sign_invoice(tbai, invoice, prev_invoice, tbai_invoice, config):
+    prev_inv_fp = get_invoice_fingerprint(prev_invoice)
+    invoice.signedxml = tbai.sign(
+        tbai_invoice,
+        "{}/{}".format(settings.MEDIA_ROOT, config.pks12.name),
+        config.password,
+        prev_inv_fp,
+    )
+    invoice.save()
+    tbai_json = json.loads(tbai.get_json(tbai_invoice))
+    subject_json = tbai_json["subject"]
+    invoice.tbai_code = create_tbai_code(invoice, subject_json)
+    invoice.save()
+    return invoice
+
+def store_pdf(tbai, invoice, tbai_invoice):
+    tbai_json = json.loads(tbai.get_json(tbai_invoice))
+    subject_json = tbai_json["subject"]
+    pdf = build_pdf(invoice, subject_json)
+    invoice.pdf = ContentFile(pdf, "{}.pdf".format(invoice.get_pdf_name()))
+    invoice.save()
+    return invoice
+
+def send_invoice(tbai, invoice, config):
+    result = tbai.send(
+        invoice.signedxml,
+        "{}/{}".format(settings.MEDIA_ROOT, config.pks12.name),
+        config.password,
+    )
+
+    if result["status"] == 200:
+        invoice.csv_code = result["CSV"]
     else:
-        invoice.errorxml = result["ResponseXML"]
+        invoice.errorxml = result["ErrorXML"]
     invoice.save()
     return invoice
 
@@ -103,26 +137,18 @@ def create_one_line_simplified_invoice(
     prev_invoice = get_prev_invoice()
     serial_code = calculate_serial_code()
     num = calculate_num(serial_code, None, prev_invoice)
-    prev_inv_fp = get_invoice_fingerprint(prev_invoice)
 
     tbai = TBai(TICKETBAI_CONF)
-    invoice = tbai.create_invoice(
+    tbai_invoice = tbai.create_invoice(
         serial_code, num, invoice_description, simplified="S"
     )
-    invoice.create_line(
+    tbai_invoice.create_line(
         line_description, Decimal(unit), Decimal(price), Decimal(vat)
     )
 
-    result = tbai.sign_and_send(
-        invoice,
-        "{}/{}".format(settings.MEDIA_ROOT, config.pks12.name),
-        config.password,
-        prev_inv_fp,
-    )
+    invoice = store_invoice(tbai, tbai_invoice, prev_invoice, email)
+    invoice = sign_invoice(tbai, invoice, prev_invoice, tbai_invoice, config)
+    invoice = store_pdf(tbai, invoice, tbai_invoice)
+    invoice = send_invoice(tbai, invoice, config)
 
-    tbai_struct = json.loads(tbai.get_json(invoice))
-    stored_invoice = store_invoice(tbai_struct, result, email)
-    if prev_invoice:
-        stored_invoice.pre_invoice = prev_invoice
-        stored_invoice.save()
-    return True
+    return None
