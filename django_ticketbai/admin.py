@@ -9,7 +9,7 @@ class ConfigAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             _("Invoice serial code"),
-            {"fields": ("prefix", "suffix")},
+            {"fields": ("prefix", "suffix", "logo")},
         ),
         (
             _("Certificate"),

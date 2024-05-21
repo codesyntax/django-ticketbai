@@ -1,53 +1,60 @@
 {% load i18n %}
 <!DOCTYPE html>
-<html lang="{{LANGUAGE_CODE}}" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
-<head>
-    <meta charset="utf-8">
-</head>
-
-<body>
-    <center>
-        <p style="font-size: 8pt;">
-            {{subject_name}}<br>
-            IFZ: {{entity_id}}
-        </p>
-
-    </center>
-    <hr>
-    <span>{{invoice.expedition_date}} - {{invoice.expedition_time}}</span>
-    <span class="right">{% trans "Simp. Invoice:" %} {{invoice.serial_code}}/{{invoice.num}}</span>
-    <hr>
-    <table style="font-size: 6pt;">
-        <tr>
-            <th>{% trans "Quan." %}</th>
-            <th>{% trans "Description" %}</th>
-            <th>{% trans "Unit" %}</th>
-            <th>{% trans "Discount" %}</th>
-            <th>{% trans "Total" %}</th>
-        </tr>
-        <tr class="invoice_lines">
-            {% for line in invoice.get_lines %}
-            <td>{{line.quantity}}</td>
-            <td>{{line.description}}</td>
-            <td>{{line.unit_amount}}</td>
-            <td>{% if line.discount %}%{{line.discount}}{% endif %}</td>
-            <td>{{line.vat_base}}</td>
-            {% endfor %}
-        </tr>
-    </table>
-    <hr>
-    <div style="font-size: 10pt;">
-    <span><strong>{% trans "Total VAT included" %}</strong></span><span class="right"><strong>{{invoice.total_amount}} €</strong></span>
-    </div>
-    </br>
-    </br>
-    <p>
-        <span>{% trans "VAT" %}<span><br>
-        {% for breakdown in invoice.get_vat_breakdown %}
-            {% for vat_type in breakdown %}
-                {% for rate in vat_type.rates.items %}
-                <span>{{rate.1.base}}}</span> oinarriaren </span><span>%{{rate.0}}</span> <span>{{rate.1.fee}}</span>
+<html lang="{{ LANGUAGE_CODE }}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:v="urn:schemas-microsoft-com:vml"
+      xmlns:o="urn:schemas-microsoft-com:office:office">
+    <head>
+        <meta charset="utf-8">
+        {% if style %}<style>{{ style }}</style>{% endif %}
+    </head>
+    <body>
+        <center>
+            {% if logo %}<img src="data:image/jpeg;base64,{{ logo }}" width="200" />{% endif %}
+            <p style="font-size: 8pt;">
+                {{ subject_name }}
+                <br>
+                IFZ: {{ entity_id }}
+            </p>
+        </center>
+        <hr>
+        <span>{{ invoice.expedition_date }} - {{ invoice.expedition_time }}</span>
+        <span class="right">{% trans "Simp. Invoice:" %} {{ invoice.serial_code }}/{{ invoice.num }}</span>
+        <hr>
+        <table style="font-size: 6pt;">
+            <tr>
+                <th>{% trans "Quan." %}</th>
+                <th>{% trans "Description" %}</th>
+                <th style="text-align: right;">{% trans "Unit" %}</th>
+                <th style="text-align: right;">{% trans "Discount" %}</th>
+                <th style="text-align: right;">{% trans "Total" %}</th>
+            </tr>
+            <tr class="invoice_lines">
+                {% for line in invoice.get_lines %}
+                    <td>{{ line.quantity }}</td>
+                    <td>{{ line.description }}</td>
+                    <td style="text-align: right;">{{ line.unit_amount }}</td>
+                    <td style="text-align: right;">
+                        {% if line.discount %}
+                            %{{ line.discount }}
+                        {% endif %}
+                    </td>
+                    <td style="text-align: right;">{{ line.vat_base }}</td>
                 {% endfor %}
+            </tr>
+        </table>
+        <hr>
+        <div style="font-size: 10pt;">
+            <span><strong>{% trans "Total VAT included" %}</strong></span><span class="right"><strong>{{ invoice.total_amount }} €</strong></span>
+        </div>
+    </br>
+</br>
+<p>
+    <span>{% trans "VAT" %}<span>
+        <br>
+        {% for vat_type in invoice.get_vat_breakdown %}
+            {% for rate in vat_type.rates.items %}
+                <span>{{ rate.1.base }}</span> oinarriaren </span><span>%{{ rate.0 }}</span> <span class="right">{{ rate.1.fee }}</span>
             {% endfor %}
         {% endfor %}
     </p>
@@ -57,8 +64,10 @@
     </center>
     <hr>
     <center>
-        <p><strong style="font-size: 7pt;">{{invoice.tbai_code}}</strong></p>
-        <img src="data:image/jpeg;base64,{{qr_base64}}"/>
+        <p>
+            <strong style="font-size: 7pt;">{{ invoice.tbai_code }}</strong>
+        </p>
+        <img src="data:image/jpeg;base64,{{ qr_base64 }}" />
     </center>
 </body>
 </html>

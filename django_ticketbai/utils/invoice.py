@@ -9,7 +9,6 @@ from django.utils.translation import gettext_lazy as _
 from django.core.mail import send_mail
 from pytbai import TBai
 from decimal import Decimal
-from django_ticketbai.models import Config
 
 
 def calculate_serial_code():
@@ -101,10 +100,10 @@ def sign_invoice(tbai, invoice, prev_invoice, tbai_invoice, config):
     invoice.save()
     return invoice
 
-def store_pdf(tbai, invoice, tbai_invoice):
+def store_pdf(tbai, invoice, tbai_invoice, config):
     tbai_json = json.loads(tbai.get_json(tbai_invoice))
     subject_json = tbai_json["subject"]
-    pdf = build_pdf(invoice, subject_json)
+    pdf = build_pdf(invoice, subject_json, config)
     invoice.pdf = ContentFile(pdf, "{}.pdf".format(invoice.get_pdf_name()))
     invoice.save()
     return invoice
@@ -149,7 +148,7 @@ def create_one_line_simplified_invoice(
 
     invoice = store_invoice(tbai, tbai_invoice, prev_invoice, email)
     invoice = sign_invoice(tbai, invoice, prev_invoice, tbai_invoice, config)
-    invoice = store_pdf(tbai, invoice, tbai_invoice)
+    invoice = store_pdf(tbai, invoice, tbai_invoice, config)
     invoice = send_invoice(tbai, invoice, config)
 
-    return None
+    return invoice

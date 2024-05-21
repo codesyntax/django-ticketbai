@@ -4,10 +4,14 @@
 }
 
 body {
-  margin-top: 15mm;
+  margin-top: 10mm;
   font-size: 7pt;
 }
 
 .right {
   float: right;
+}
+
+table {
+  width: 100%;
 }

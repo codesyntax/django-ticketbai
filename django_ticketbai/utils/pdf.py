@@ -1,11 +1,14 @@
 import os
+import io
 import qrcode
 import base64
 import crc8
 from io import BytesIO
 from django import template
 from requests.models import PreparedRequest
+from django.conf import settings
 from weasyprint import HTML, CSS
+from PIL import Image
 
 
 def get_crc8_url(url):
@@ -41,7 +44,7 @@ def get_css_string():
     return css
 
 
-def get_html_string(invoice, subject):
+def get_html_string(invoice, subject, logo=None, style=None):
     t = template.loader.get_template("PDF/ticketbai.html")
     context = {
         "qr_base64": create_qr_base64(invoice, subject).decode("utf-8"),
@@ -49,11 +52,23 @@ def get_html_string(invoice, subject):
         "entity_id": subject["entity_id"],
         "invoice": invoice,
     }
+    if style:
+        context.update({"style": style})
+    if logo:
+        logo_path = os.path.join(settings.STATIC_ROOT, logo)
+        with Image.open(logo_path) as image_file:
+            width, height = image_file.size
+            new_height = int(200 * height / width)
+            image_file = image_file.resize((200, new_height), Image.LANCZOS)
+            img_bytes = io.BytesIO()
+            image_file.save(img_bytes, format='PNG')
+            encoded_logo = base64.b64encode(img_bytes.getvalue()).decode("utf-8")
+            context.update({"logo": encoded_logo})
     html = t.render(context)
     return html
 
 
-def build_pdf(invoice, subject):
+def build_pdf(invoice, subject, config):
     css = CSS(string=get_css_string())
-    html = HTML(string=get_html_string(invoice, subject))
+    html = HTML(string=get_html_string(invoice, subject, config.logo))
     return html.write_pdf(stylesheets=[css])
