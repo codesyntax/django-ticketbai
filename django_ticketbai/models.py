@@ -13,7 +13,7 @@ VAT_TYPE_CHOICES = ((row, row) for row in L11)
 
 
 class Config(models.Model):
-    logo = models.CharField(max_length=150, verbose_name=_("Logo"), help_text=_("Relative path to the logo"))
+    logo = models.CharField(max_length=150, null=True, blank=True, verbose_name=_("Logo"), help_text=_("Relative path to the logo"))
     prefix = models.CharField(max_length=5, verbose_name=_("Prefix"))
     suffix = models.CharField(
         max_length=5, null=True, blank=True, verbose_name=_("Suffix")
