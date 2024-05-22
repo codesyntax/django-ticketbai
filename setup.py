@@ -2,9 +2,6 @@
 
 from setuptools import setup, find_packages
 
-with open('requirements.txt') as fp:
-    install_requires = fp.read().splitlines()
-
 with open("README.md") as f:
     readme = f.read()
 
@@ -27,7 +24,12 @@ setup(
     url="https://github.com/codesyntax/django-ticketbai",
     license=license,
     packages=find_packages(exclude=("tests", "docs")),
-    install_requires=install_requires,
+    install_requires=[
+        "pytbai"
+        "qrcode",
+        "weasyprint==59.0",
+        "crc8==0.2.0",
+    ],
     classifiers=[
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
