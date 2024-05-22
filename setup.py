@@ -11,7 +11,7 @@ with open("LICENSE") as f:
 
 setup(
     name="django-ticketbai",
-    version="1.1",
+    version="1.2",
     description=(
         "django-ticketbai allows to create, manage, store and send TicketBai"
         " invoices to the Basque tax authorities."
