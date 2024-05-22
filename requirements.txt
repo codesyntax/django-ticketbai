@@ -1,0 +1,4 @@
+pytbai==1.5.3
+qrcode==7.4.2
+weasyprint==59.0
+crc8==0.2.0
