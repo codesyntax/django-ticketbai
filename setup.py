@@ -2,6 +2,22 @@
 
 from setuptools import setup, find_packages
 
+try: # for pip >= 10
+    from pip._internal.req import parse_requirements
+except ImportError: # for pip <= 9.0.3
+    from pip.req import parse_requirements
+
+def get_requirements(source):
+    try:
+        install_reqs = parse_requirements(source, session=False)
+    except TypeError:
+        # Older version of pip.
+        install_reqs = parse_requirements(source)
+    try:
+        requirements = [str(ir.req) for ir in install_reqs]
+    except:
+        requirements = [str(ir.requirement) for ir in install_reqs]
+    return list(requirements)
 
 with open("README.md") as f:
     readme = f.read()
@@ -25,12 +41,7 @@ setup(
     url="https://github.com/codesyntax/django-ticketbai",
     license=license,
     packages=find_packages(exclude=("tests", "docs")),
-    install_requires=[
-        "pytbai",
-        "qrcode==7.4.2",
-        "weasyprint==59.0",
-        "crc8==0.2.0",
-    ],
+    install_requires=get_requirements('requirements.txt'),
     classifiers=[
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
