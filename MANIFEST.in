@@ -1,0 +1,6 @@
+include *.in
+include *.md
+include *.txt
+include django_ticketbai/templates/*
+recursive-include django_ticketbai *.css
+recursive-include django_ticketbai *.html
