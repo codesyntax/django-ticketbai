@@ -11,7 +11,7 @@ with open("LICENSE") as f:
 
 setup(
     name="django-ticketbai",
-    version="1.2",
+    version="1.3",
     description=(
         "django-ticketbai allows to create, manage, store and send TicketBai"
         " invoices to the Basque tax authorities."
@@ -30,6 +30,10 @@ setup(
         "weasyprint==59.0",
         "crc8==0.2.0",
     ],
+    include_package_data = True,
+    package_data={
+        "django_ticketbai": ["templates/*"],
+    },
     classifiers=[
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
