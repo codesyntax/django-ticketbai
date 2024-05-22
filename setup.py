@@ -25,7 +25,7 @@ setup(
     license=license,
     packages=find_packages(exclude=("tests", "docs")),
     install_requires=[
-        "pytbai"
+        "pytbai",
         "qrcode",
         "weasyprint==59.0",
         "crc8==0.2.0",
