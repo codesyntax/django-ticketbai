@@ -153,7 +153,7 @@ def create_one_line_simplified_invoice(
         serial_code, num, invoice_description, simplified="S"
     )
     tbai_invoice.create_line(
-        line_description, Decimal(unit), Decimal(price), Decimal(discount), Decimal(vat), vat_included=vat_included
+        description=line_description, quantity=Decimal(unit), amount=Decimal(price), discount=Decimal(discount), vat_rate=Decimal(vat), vat_included=vat_included
     )
 
     invoice = store_invoice(tbai, tbai_invoice, lang, prev_invoice, email)
