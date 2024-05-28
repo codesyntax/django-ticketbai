@@ -10,6 +10,8 @@ from django.core.mail import send_mail
 from pytbai import TBai
 from decimal import Decimal
 
+LANGUAGE_CODE = getattr(settings, "LANGUAGE_CODE", "en")
+
 
 def calculate_serial_code():
     config = Config.objects.filter(is_active=True).first()
@@ -62,12 +64,13 @@ def create_tbai_code(invoice, subject):
     return tbai_code
 
 
-def store_invoice(tbai, tbai_invoice, prev_invoice=None, email=None):
+def store_invoice(tbai, tbai_invoice, lang, prev_invoice=None, email=None):
     tbai_json = json.loads(tbai.get_json(tbai_invoice))
     invoice_json = tbai_json["invoice"]
     subject_json = tbai_json["subject"]
     lines = invoice_json.pop("lines")
     invoice = Invoice(**invoice_json)
+    invoice.lang = lang
     if email:
         invoice.email = email
     invoice.vat_breakdown = json.dumps(invoice_json["vat_breakdown"])
@@ -132,6 +135,7 @@ def create_one_line_simplified_invoice(
     price,
     discount=0,
     vat=21,
+    lang=LANGUAGE_CODE,
 ):
     config = Config.objects.filter(is_active=True).first()
     prev_invoice = get_prev_invoice()
@@ -146,7 +150,7 @@ def create_one_line_simplified_invoice(
         line_description, Decimal(unit), Decimal(price), Decimal(discount), Decimal(vat)
     )
 
-    invoice = store_invoice(tbai, tbai_invoice, prev_invoice, email)
+    invoice = store_invoice(tbai, tbai_invoice, lang, prev_invoice, email)
     invoice = sign_invoice(tbai, invoice, prev_invoice, tbai_invoice, config)
     invoice = store_pdf(tbai, invoice, tbai_invoice, config)
     invoice = send_invoice(tbai, invoice, config)
