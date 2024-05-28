@@ -135,6 +135,7 @@ def create_one_line_simplified_invoice(
     price,
     discount=0,
     vat=21,
+    vat_included=False,
     lang=LANGUAGE_CODE,
 ):
     config = Config.objects.filter(is_active=True).first()
@@ -152,7 +153,7 @@ def create_one_line_simplified_invoice(
         serial_code, num, invoice_description, simplified="S"
     )
     tbai_invoice.create_line(
-        line_description, Decimal(unit), Decimal(price), Decimal(discount), Decimal(vat), vat_included=True
+        line_description, Decimal(unit), Decimal(price), Decimal(discount), Decimal(vat), vat_included=vat_included
     )
 
     invoice = store_invoice(tbai, tbai_invoice, lang, prev_invoice, email)
