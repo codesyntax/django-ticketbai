@@ -10,6 +10,7 @@ from django.conf import settings
 
 User = settings.AUTH_USER_MODEL
 VAT_TYPE_CHOICES = ((row, row) for row in L11)
+LANGUAGE_CODE = getattr(settings, "LANGUAGE_CODE", "en")
 
 
 class Config(models.Model):
@@ -103,6 +104,7 @@ class Invoice(models.Model):
         verbose_name=_("Previous invoice"),
         on_delete=models.SET_NULL,
     )
+    lang = models.CharField(max_length=3, default=LANGUAGE_CODE)
 
     def get_name(self):
         return "{}/{}".format(self.serial_code, self.num)
