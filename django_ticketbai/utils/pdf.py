@@ -5,6 +5,7 @@ import base64
 import crc8
 from io import BytesIO
 from django import template
+from django.utils import translation
 from requests.models import PreparedRequest
 from django.conf import settings
 from weasyprint import HTML, CSS
@@ -64,7 +65,9 @@ def get_html_string(invoice, subject, logo=None, style=None):
             image_file.save(img_bytes, format='PNG')
             encoded_logo = base64.b64encode(img_bytes.getvalue()).decode("utf-8")
             context.update({"logo": encoded_logo})
+    translation.activate(invoice.lang)
     html = t.render(context)
+    translation.deactivate()
     return html
 
 
