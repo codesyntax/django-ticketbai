@@ -61,6 +61,7 @@ class InvoiceAdmin(admin.ModelAdmin):
                     "total_amount",
                     "vat_breakdown",
                     "email",
+                    "lang",
                 )
             },
         ),
