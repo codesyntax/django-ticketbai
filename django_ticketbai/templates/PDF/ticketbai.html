@@ -18,7 +18,7 @@
             </p>
         </center>
         <hr>
-        <span>{{ invoice.expedition_date }} - {{ invoice.expedition_time }}</span>
+        <span>{{ invoice.expedition_date|date:"Y/m/d" }} - {{ invoice.expedition_time }}</span>
         <span class="right">{% trans "Simp. Invoice:" %} {{ invoice.serial_code }}/{{ invoice.num }}</span>
         <hr>
         <table style="font-size: 6pt;">
