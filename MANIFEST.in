@@ -4,3 +4,5 @@ include *.txt
 include django_ticketbai/templates/*
 recursive-include django_ticketbai *.css
 recursive-include django_ticketbai *.html
+recursive-include django_ticketbai *.po
+recursive-include django_ticketbai *.mo
