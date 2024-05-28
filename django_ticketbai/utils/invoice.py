@@ -142,7 +142,12 @@ def create_one_line_simplified_invoice(
     serial_code = calculate_serial_code()
     num = calculate_num(serial_code, None, prev_invoice)
 
-    tbai = TBai(TICKETBAI_CONF)
+    if settings.DEBUG:
+        env="DEV"
+    else:
+        env="PROD"
+    
+    tbai = TBai(TICKETBAI_CONF, env=env)
     tbai_invoice = tbai.create_invoice(
         serial_code, num, invoice_description, simplified="S"
     )
