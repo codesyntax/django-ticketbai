@@ -27,7 +27,7 @@ setup(
     install_requires=[
         "pytbai",
         "qrcode",
-        "weasyprint==59.0",
+        "weasyprint==62.2",
         "crc8==0.2.0",
     ],
     include_package_data = True,
