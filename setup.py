@@ -11,7 +11,7 @@ with open("LICENSE") as f:
 
 setup(
     name="django-ticketbai",
-    version="2.1",
+    version="2.2",
     description=(
         "django-ticketbai allows to create, manage, store and send TicketBai"
         " invoices to the Basque tax authorities."
@@ -24,10 +24,11 @@ setup(
     url="https://github.com/codesyntax/django-ticketbai",
     license=license,
     packages=find_packages(exclude=("tests", "docs")),
+    python_requires=">=3.11",
     install_requires=[
-        "pytbai",
+        "pytbai>=1.7.0",
         "qrcode",
-        "weasyprint==59.0",
+        "weasyprint==63.1",
         "crc8==0.2.0",
     ],
     include_package_data = True,
@@ -39,9 +40,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
     ],
 )

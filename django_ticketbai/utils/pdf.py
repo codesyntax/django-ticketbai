@@ -50,7 +50,7 @@ def get_html_string(invoice, subject, logo=None, style=None):
     context = {
         "qr_base64": create_qr_base64(invoice, subject).decode("utf-8"),
         "subject_name": subject["name"],
-        "subject_address": subject["address"],
+        "subject_address": subject.get("address"),
         "entity_id": subject["entity_id"],
         "invoice": invoice,
     }

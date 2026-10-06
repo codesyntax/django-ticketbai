@@ -1,0 +1,13 @@
+2.2 (unreleased)
+----------------
+
+- Require pytbai >= 1.7.0, which allows signxml 3.2.2, cryptography 42.0.7 and
+  pyOpenSSL 24.1.0.
+- Bump weasyprint from 59.0 to 63.1: 59.0 is incompatible with pydyf >= 0.11
+  and PDF generation failed with
+  ``TypeError: PDF.__init__() takes 1 positional argument but 3 were given``.
+- Add Python 3.12 support; require Python 3.11 or newer.
+- ``get_html_string`` no longer requires ``subject["address"]``.
+- Add a test suite (``tests/``) and a CI workflow. The tests cover the PDF
+  pipeline, the invoice helpers, the admin registration and the dependency
+  constraints that caused the signxml conflict.
