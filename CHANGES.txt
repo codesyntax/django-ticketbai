@@ -1,3 +1,10 @@
+2.4 (unreleased)
+----------------
+
+- Require pytbai >= 1.7.1, which allows pyOpenSSL 24.2.1 and cryptography
+  43.0.0.
+
+
 2.3 (unreleased)
 ----------------
 

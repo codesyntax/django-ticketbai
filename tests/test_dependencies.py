@@ -68,4 +68,5 @@ def test_django_ticketbai_requires_a_pytbai_with_the_relaxed_caps():
 
     for req in requirements:
         assert installed in req.specifier
-    assert any(req.specifier.contains(Version("1.7.0")) for req in requirements)
+    # 1.7.1 raised the pyOpenSSL and cryptography caps.
+    assert any(req.specifier.contains(Version("1.7.1")) for req in requirements)
