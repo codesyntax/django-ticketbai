@@ -1,3 +1,13 @@
+2.3 (unreleased)
+----------------
+
+- Document the ``TICKETBAI_CONF`` setting in the README: its structure, the
+  required and optional keys, the ``Config`` model it goes with, and the
+  ``DEBUG`` based test/production switch (issue #5).
+- Add tests that keep the documented example in sync with ``pytbai``.
+- Bump crc8 to 0.2.1 (the CRC values are unchanged).
+
+
 2.2 (unreleased)
 ----------------
 
