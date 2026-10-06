@@ -7,7 +7,6 @@ from django_ticketbai.models import Config, Invoice
 from django_ticketbai.utils.invoice import create_one_line_simplified_invoice
 from django_ticketbai.utils.pdf import get_css_string, get_html_string
 from pytbai import TBai
-from weasyprint import HTML, CSS
 
 TICKETBAI_CONF = getattr(settings, "TICKETBAI_CONF", None)
 

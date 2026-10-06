@@ -5,8 +5,6 @@ from django.core.files.base import ContentFile
 from django.utils import timezone
 from django_ticketbai.models import Config, Invoice, InvoiceLine
 from django_ticketbai.utils.pdf import build_pdf
-from django.utils.translation import gettext_lazy as _
-from django.core.mail import send_mail
 from pytbai import TBai
 from decimal import Decimal
 
@@ -67,7 +65,6 @@ def create_tbai_code(invoice, subject):
 def store_invoice(tbai, tbai_invoice, lang, prev_invoice=None, email=None):
     tbai_json = json.loads(tbai.get_json(tbai_invoice))
     invoice_json = tbai_json["invoice"]
-    subject_json = tbai_json["subject"]
     lines = invoice_json.pop("lines")
     invoice = Invoice(**invoice_json)
     invoice.lang = lang
@@ -88,6 +85,7 @@ def store_invoice(tbai, tbai_invoice, lang, prev_invoice=None, email=None):
     invoice.save()
     return invoice
 
+
 def sign_invoice(tbai, invoice, prev_invoice, tbai_invoice, config):
     prev_inv_fp = get_invoice_fingerprint(prev_invoice)
     invoice.signedxml = tbai.sign(
@@ -103,6 +101,7 @@ def sign_invoice(tbai, invoice, prev_invoice, tbai_invoice, config):
     invoice.save()
     return invoice
 
+
 def store_pdf(tbai, invoice, tbai_invoice, config):
     tbai_json = json.loads(tbai.get_json(tbai_invoice))
     subject_json = tbai_json["subject"]
@@ -110,6 +109,7 @@ def store_pdf(tbai, invoice, tbai_invoice, config):
     invoice.pdf = ContentFile(pdf, "{}.pdf".format(invoice.get_pdf_name()))
     invoice.save()
     return invoice
+
 
 def send_invoice(tbai, invoice, config):
     result = tbai.send(
@@ -144,16 +144,21 @@ def create_one_line_simplified_invoice(
     num = calculate_num(serial_code, None, prev_invoice)
 
     if settings.DEBUG:
-        env="DEV"
+        env = "DEV"
     else:
-        env="PROD"
-    
+        env = "PROD"
+
     tbai = TBai(TICKETBAI_CONF, env=env)
     tbai_invoice = tbai.create_invoice(
         serial_code, num, invoice_description, simplified="S"
     )
     tbai_invoice.create_line(
-        description=line_description, quantity=Decimal(unit), amount=Decimal(price), discount=Decimal(discount), vat_rate=Decimal(vat), vat_included=vat_included
+        description=line_description,
+        quantity=Decimal(unit),
+        amount=Decimal(price),
+        discount=Decimal(discount),
+        vat_rate=Decimal(vat),
+        vat_included=vat_included,
     )
 
     invoice = store_invoice(tbai, tbai_invoice, lang, prev_invoice, email)

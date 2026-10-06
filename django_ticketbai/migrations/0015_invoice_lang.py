@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('django_ticketbai', '0014_config_logo_alter_invoice_email'),
+        ("django_ticketbai", "0014_config_logo_alter_invoice_email"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='invoice',
-            name='lang',
-            field=models.CharField(default='eu', max_length=3),
+            model_name="invoice",
+            name="lang",
+            field=models.CharField(default="eu", max_length=3),
         ),
     ]

@@ -31,7 +31,7 @@ setup(
         "weasyprint==63.1",
         "crc8==0.2.1",
     ],
-    include_package_data = True,
+    include_package_data=True,
     package_data={
         "django_ticketbai": ["templates/*"],
     },

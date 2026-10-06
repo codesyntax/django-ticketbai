@@ -63,7 +63,7 @@ def get_html_string(invoice, subject, logo=None, style=None):
             new_height = int(200 * height / width)
             image_file = image_file.resize((200, new_height), Image.LANCZOS)
             img_bytes = io.BytesIO()
-            image_file.save(img_bytes, format='PNG')
+            image_file.save(img_bytes, format="PNG")
             encoded_logo = base64.b64encode(img_bytes.getvalue()).decode("utf-8")
             context.update({"logo": encoded_logo})
     translation.activate(invoice.lang)

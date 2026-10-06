@@ -2,3 +2,6 @@ __pycache__/
 django_ticketbai.egg-info/
 build/
 *.pyc
+
+# ruff
+.ruff_cache/

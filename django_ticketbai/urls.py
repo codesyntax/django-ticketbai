@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import test_send_and_store_invoice,show_pdf_html
+from .views import test_send_and_store_invoice, show_pdf_html
 
 urlpatterns = [
     path(

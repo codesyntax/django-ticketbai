@@ -29,7 +29,9 @@ def _requirement(distribution, name):
 
 def test_pytbai_allows_signxml_3_2_2():
     for req in _requirement("pytbai", "signxml"):
-        assert req.specifier.contains(Version("3.2.2")), f"signxml 3.2.2 blocked by {req}"
+        assert req.specifier.contains(
+            Version("3.2.2")
+        ), f"signxml 3.2.2 blocked by {req}"
 
 
 def test_pytbai_allows_pyopenssl_24_and_cryptography_42():

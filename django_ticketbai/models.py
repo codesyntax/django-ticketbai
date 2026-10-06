@@ -7,14 +7,19 @@ from django.utils.translation import gettext as _
 from .validators import validate_pdf_extension, validate_pks_extension
 from django.conf import settings
 
-
 User = settings.AUTH_USER_MODEL
 VAT_TYPE_CHOICES = ((row, row) for row in L11)
 LANGUAGE_CODE = getattr(settings, "LANGUAGE_CODE", "en")
 
 
 class Config(models.Model):
-    logo = models.CharField(max_length=150, null=True, blank=True, verbose_name=_("Logo"), help_text=_("Relative path to the logo"))
+    logo = models.CharField(
+        max_length=150,
+        null=True,
+        blank=True,
+        verbose_name=_("Logo"),
+        help_text=_("Relative path to the logo"),
+    )
     prefix = models.CharField(max_length=5, verbose_name=_("Prefix"))
     suffix = models.CharField(
         max_length=5, null=True, blank=True, verbose_name=_("Suffix")
@@ -45,16 +50,10 @@ class Config(models.Model):
 
 
 class Invoice(models.Model):
-    serial_code = models.CharField(
-        max_length=20, verbose_name=_("Serial code")
-    )
+    serial_code = models.CharField(max_length=20, verbose_name=_("Serial code"))
     num = models.IntegerField(verbose_name=_("Number"))
-    description = models.CharField(
-        max_length=255, verbose_name=_("Description")
-    )
-    simplified = models.CharField(
-        max_length=2, default=N, verbose_name=_("Simplified")
-    )
+    description = models.CharField(max_length=255, verbose_name=_("Description"))
+    simplified = models.CharField(max_length=2, default=N, verbose_name=_("Simplified"))
     substitution = models.CharField(
         max_length=2, default=N, verbose_name=_("Substitution")
     )
@@ -84,12 +83,8 @@ class Invoice(models.Model):
         blank=True,
         verbose_name=_("Signature Value"),
     )
-    signedxml = models.TextField(
-        null=True, blank=True, verbose_name=_("Signed XML")
-    )
-    errorxml = models.TextField(
-        null=True, blank=True, verbose_name=_("Error XML")
-    )
+    signedxml = models.TextField(null=True, blank=True, verbose_name=_("Signed XML"))
+    errorxml = models.TextField(null=True, blank=True, verbose_name=_("Error XML"))
     pdf = models.FileField(
         upload_to="ticketbai",
         null=True,
@@ -123,9 +118,7 @@ class Invoice(models.Model):
     def save(self, *args, **kwargs):
         if self.signedxml:
             root = ET.fromstring(self.signedxml)
-            signature = root.find(
-                "{http://www.w3.org/2000/09/xmldsig#}Signature"
-            )
+            signature = root.find("{http://www.w3.org/2000/09/xmldsig#}Signature")
             signaturevalue = signature.find(
                 "{http://www.w3.org/2000/09/xmldsig#}SignatureValue"
             )
@@ -141,12 +134,8 @@ class Invoice(models.Model):
 
 
 class InvoiceLine(models.Model):
-    invoice = models.ForeignKey(
-        Invoice, on_delete=models.CASCADE, related_name="lines"
-    )
-    description = models.CharField(
-        max_length=255, verbose_name=_("Description")
-    )
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, related_name="lines")
+    description = models.CharField(max_length=255, verbose_name=_("Description"))
     quantity = models.DecimalField(
         default=0, max_digits=7, decimal_places=2, verbose_name=_("Quantity")
     )

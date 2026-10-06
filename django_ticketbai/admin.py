@@ -107,6 +107,6 @@ class InvoiceAdmin(admin.ModelAdmin):
     #     return False
 
 
-if hasattr(settings, 'TICKETBAI_CONF'):
+if hasattr(settings, "TICKETBAI_CONF"):
     admin.site.register(Config, ConfigAdmin)
     admin.site.register(Invoice, InvoiceAdmin)

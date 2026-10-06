@@ -17,9 +17,7 @@ class Migration(migrations.Migration):
             field=models.FileField(
                 null=True,
                 upload_to="ticketbai",
-                validators=[
-                    django_ticketbai.validators.validate_pdf_extension
-                ],
+                validators=[django_ticketbai.validators.validate_pdf_extension],
                 verbose_name="PDF file",
             ),
         ),
