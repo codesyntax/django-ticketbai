@@ -11,7 +11,7 @@ with open("LICENSE") as f:
 
 setup(
     name="django-ticketbai",
-    version="2.3",
+    version="2.4",
     description=(
         "django-ticketbai allows to create, manage, store and send TicketBai"
         " invoices to the Basque tax authorities."
@@ -26,7 +26,7 @@ setup(
     packages=find_packages(exclude=("tests", "docs")),
     python_requires=">=3.11",
     install_requires=[
-        "pytbai>=1.7.0",
+        "pytbai>=1.7.1",
         "qrcode",
         "weasyprint==63.1",
         "crc8==0.2.1",
