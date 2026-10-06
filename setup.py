@@ -29,7 +29,7 @@ setup(
         "pytbai>=1.7.0",
         "qrcode",
         "weasyprint==63.1",
-        "crc8==0.2.0",
+        "crc8==0.2.1",
     ],
     include_package_data = True,
     package_data={
