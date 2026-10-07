@@ -1,4 +1,6 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/django-ticketbai)
+![Django versions](https://img.shields.io/badge/django-4.2%20%7C%205.2-0C4B33)
+![Status](https://img.shields.io/badge/status-stable-brightgreen)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/codesyntax/django-ticketbai/python-package.yml)
 ![PyPI - Version](https://img.shields.io/pypi/v/django-ticketbai)
 
