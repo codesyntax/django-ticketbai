@@ -1,3 +1,5 @@
+import logging
+
 from django.conf import settings
 import crc8
 import json
@@ -7,8 +9,11 @@ from django_ticketbai.models import Config, Invoice, InvoiceLine
 from django_ticketbai.utils.pdf import build_pdf
 from pytbai import TBai
 from decimal import Decimal
+from requests.exceptions import RequestException
 
 LANGUAGE_CODE = getattr(settings, "LANGUAGE_CODE", "en")
+
+logger = logging.getLogger(__name__)
 
 
 def calculate_serial_code():
@@ -112,15 +117,26 @@ def store_pdf(tbai, invoice, tbai_invoice, config):
 
 
 def send_invoice(tbai, invoice, config):
-    result = tbai.send(
-        invoice.signedxml,
-        "{}/{}".format(settings.MEDIA_ROOT, config.pks12.name),
-        config.password,
-    )
+    try:
+        result = tbai.send(
+            invoice.signedxml,
+            "{}/{}".format(settings.MEDIA_ROOT, config.pks12.name),
+            config.password,
+        )
+    except RequestException as exc:
+        logger.exception("TicketBAI send failed for invoice %s", invoice.pk)
+        invoice.errorxml = str(exc)
+        invoice.save(update_fields=["errorxml"])
+        raise
 
     if result["status"] == 200:
         invoice.csv_code = result["CSV"]
     else:
+        logger.error(
+            "TicketBAI send failed for invoice %s: %s",
+            invoice.pk,
+            result["ErrorXML"],
+        )
         invoice.errorxml = result["ErrorXML"]
     invoice.save()
     return invoice
