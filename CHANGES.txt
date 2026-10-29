@@ -2,7 +2,7 @@
 ----------------
 
 - Migrate packaging metadata from setup.py to pyproject.toml (PEP 621).
-- Drop Django 4.2 support; Django 5.2 is tested and supported.
+- Drop Django 4.2 support; Django 5.2, 6.0 and 6.1 are tested and supported.
 
 
 2.5 (unreleased)
