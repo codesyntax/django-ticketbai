@@ -1,5 +1,5 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/django-ticketbai)
-![Django versions](https://img.shields.io/badge/django-4.2%20%7C%205.2-0C4B33)
+![Django versions](https://img.shields.io/badge/django-5.2-0C4B33)
 ![Status](https://img.shields.io/badge/status-stable-brightgreen)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/codesyntax/django-ticketbai/python-package.yml)
 ![PyPI - Version](https://img.shields.io/pypi/v/django-ticketbai)
@@ -11,7 +11,7 @@ django-ticketbai allows to create, manage, store and send TicketBai invoices to 
 ## Requirements
 
 - Python 3.11 or newer
-- Django 4.2 or 5.2
+- Django 5.2
 
 ## Installation
 
