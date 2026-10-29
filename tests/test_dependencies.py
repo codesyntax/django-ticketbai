@@ -1,8 +1,7 @@
 """Guard rails for the dependency constraints.
 
-Regression tests for the conflict this package hit: ``pytbai`` capped
-``signxml<=3.2.1`` and ``pyOpenSSL<=23.2.0`` while the consuming project
-required ``signxml==3.2.2`` and newer cryptography.
+Regression tests for the signing-stack constraints: pytbai 1.8 moves to
+signxml 5.2, cryptography 46.0.6+ and lxml 6.1+, and drops pyOpenSSL.
 """
 
 import inspect
@@ -27,19 +26,22 @@ def _requirement(distribution, name):
     return [r for r in _requires(distribution) if r.name.lower() == name]
 
 
-def test_pytbai_allows_signxml_3_2_2():
+def test_pytbai_allows_signxml_5_2():
     for req in _requirement("pytbai", "signxml"):
         assert req.specifier.contains(
-            Version("3.2.2")
-        ), f"signxml 3.2.2 blocked by {req}"
+            Version("5.2.0")
+        ), f"signxml 5.2.0 blocked by {req}"
 
 
-def test_pytbai_allows_pyopenssl_24_and_cryptography_42():
-    for name, wanted in (("pyopenssl", "24.1.0"), ("cryptography", "42.0.7")):
-        for req in _requirement("pytbai", name):
-            assert req.specifier.contains(
-                Version(wanted)
-            ), f"{name} {wanted} blocked by {req}"
+def test_pytbai_allows_cryptography_50():
+    for req in _requirement("pytbai", "cryptography"):
+        assert req.specifier.contains(
+            Version("50.0.2")
+        ), f"cryptography 50.0.2 blocked by {req}"
+
+
+def test_pytbai_does_not_require_pyopenssl():
+    assert _requirement("pytbai", "pyopenssl") == []
 
 
 def test_installed_signxml_satisfies_pytbai():
@@ -70,5 +72,6 @@ def test_django_ticketbai_requires_a_pytbai_with_the_relaxed_caps():
 
     for req in requirements:
         assert installed in req.specifier
-    # 1.7.1 raised the pyOpenSSL and cryptography caps.
-    assert any(req.specifier.contains(Version("1.7.1")) for req in requirements)
+    # 1.8.0 moved to signxml 5.2 / cryptography 50 / lxml 6 and dropped
+    # pyOpenSSL.
+    assert any(req.specifier.contains(Version("1.8.0")) for req in requirements)

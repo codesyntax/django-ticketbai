@@ -1,3 +1,14 @@
+2.5 (unreleased)
+----------------
+
+- Require pytbai >= 1.8, which upgrades the signing stack to signxml 5.2,
+  cryptography 46.0.6+ and lxml 6.1+, and drops pyOpenSSL.
+- Log TicketBAI send errors with the invoice id, persist them in
+  ``Invoice.errorxml`` and re-raise request errors so callers can handle them.
+- Declare ``requests`` explicitly.
+- Bump weasyprint to 70.0.
+
+
 2.4 (unreleased)
 ----------------
 
