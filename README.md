@@ -181,6 +181,23 @@ Example cron entry:
 
 The command never prints or stores the certificate password or private key.
 
+### Invoice admin actions
+
+The `Invoice` changelist includes these actions:
+
+- **Retry TicketBAI send**: sends invoices that have signed XML but no CSV.
+  It processes them in invoice order, skips invoices that were already sent,
+  checks the certificate first and stops at the first rejection. It never
+  creates a new invoice.
+- **Regenerate PDF**: builds the PDF from an existing signed invoice when the
+  PDF file is missing. It does not re-sign or renumber the invoice.
+- **Resend TicketBAI email**: sends the PDF to `Invoice.email`, but only when
+  the invoice has a CSV (accepted by TicketBAI) and a PDF. This prevents
+  sending an unaccepted ticket to a customer.
+
+The changelist also has **TicketBAI status** (Sent/Error/Pending) and **Has
+PDF** filters, and searches by email, TicketBAI code and CSV.
+
 ## Usage
 
 ```python
