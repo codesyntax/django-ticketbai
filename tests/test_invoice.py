@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime, timezone
 from types import SimpleNamespace
 from unittest.mock import Mock
 
@@ -6,6 +6,7 @@ import pytest
 from django.core.exceptions import ValidationError
 from requests.exceptions import SSLError
 
+from django_ticketbai.utils.certificate import CertificateInfo
 from django_ticketbai.utils.invoice import (
     calculate_num,
     create_tbai_code,
@@ -151,3 +152,57 @@ def test_send_invoice_logs_the_error_payload_when_the_service_rejects_it(caplog)
     assert invoice.errorxml == "connection error"
     assert "TicketBAI send failed for invoice 42" in caplog.text
     invoice.save.assert_called_once_with()
+
+
+def test_send_invoice_clears_a_stale_error_on_success():
+    invoice = SimpleNamespace(
+        pk=42,
+        signedxml="<xml/>",
+        csv_code=None,
+        errorxml="old TLS error",
+        save=Mock(),
+    )
+    config = SimpleNamespace(
+        pks12=SimpleNamespace(name="certs/cert.p12"), password="secret"
+    )
+    tbai = SimpleNamespace(
+        send=Mock(return_value={"status": 200, "CSV": "CSV-1", "ErrorXML": None})
+    )
+
+    send_invoice(tbai, invoice, config)
+
+    assert invoice.csv_code == "CSV-1"
+    assert invoice.errorxml is None
+    invoice.save.assert_called_once_with()
+
+
+def test_send_invoice_does_not_contact_the_authority_when_the_certificate_expired(
+    caplog,
+):
+    invoice = SimpleNamespace(
+        pk=42,
+        signedxml="<xml/>",
+        csv_code=None,
+        errorxml=None,
+        save=Mock(),
+    )
+    info = CertificateInfo(
+        status="expired",
+        not_after=datetime(2025, 4, 28, tzinfo=timezone.utc),
+        days_left=-553,
+    )
+    config = SimpleNamespace(
+        pk=1,
+        pks12=SimpleNamespace(name="certs/cert.p12"),
+        password="secret",
+        certificate_info=Mock(return_value=info),
+    )
+    tbai = SimpleNamespace(send=Mock())
+
+    result = send_invoice(tbai, invoice, config)
+
+    assert result is invoice
+    tbai.send.assert_not_called()
+    assert invoice.errorxml == "TicketBAI client certificate expired on 2025-04-28"
+    invoice.save.assert_called_once_with(update_fields=["errorxml"])
+    assert "TicketBAI certificate expired" in caplog.text

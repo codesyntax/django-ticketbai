@@ -4,6 +4,7 @@ import json
 from pytbai.definitions import DEFAULT_VAT, N, DEFAULT_VAT_RATE, S1, L11
 from django.db import models
 from django.utils.translation import gettext as _
+from .utils.certificate import DEFAULT_WARNING_DAYS, inspect_certificate
 from .validators import validate_pdf_extension, validate_pks_extension
 from django.conf import settings
 
@@ -38,6 +39,16 @@ class Config(models.Model):
 
     def save(self, *args, **kwargs):
         super(Config, self).save(*args, **kwargs)
+
+    def certificate_info(self, warn_days=None):
+        """Return the status of the configured TicketBAI client certificate."""
+        if warn_days is None:
+            warn_days = getattr(
+                settings,
+                "TICKETBAI_CERTIFICATE_WARNING_DAYS",
+                DEFAULT_WARNING_DAYS,
+            )
+        return inspect_certificate(self.pks12, self.password, warn_days)
 
     def __str__(self):
         return "{}-YYYY{}".format(

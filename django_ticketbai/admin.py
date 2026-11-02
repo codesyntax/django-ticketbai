@@ -1,11 +1,15 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.conf import settings
+from django.utils.html import format_html
+from django.utils.translation import gettext as _
 from .models import Invoice, InvoiceLine, Config
 from .forms import ConfigForm
-from django.utils.translation import gettext as _
 
 
 class ConfigAdmin(admin.ModelAdmin):
+    list_display = ("__str__", "is_active", "certificate_state")
+    list_display_links = ("__str__",)
+    readonly_fields = ("certificate_state",)
     fieldsets = (
         (
             _("Invoice serial code"),
@@ -13,10 +17,57 @@ class ConfigAdmin(admin.ModelAdmin):
         ),
         (
             _("Certificate"),
-            {"fields": ("pks12", "password")},
+            {"fields": ("pks12", "password", "certificate_state")},
         ),
     )
     form = ConfigForm
+
+    @admin.display(description=_("Certificate status"))
+    def certificate_state(self, obj):
+        info = obj.certificate_info()
+        if info.status == "expired":
+            return format_html(
+                '<span style="color:#b00020;font-weight:bold">{}</span>',
+                _("Expired on %(date)s") % {"date": info.not_after.date()},
+            )
+        if info.status == "expiring":
+            return format_html(
+                '<span style="color:#b36b00;font-weight:bold">{}</span>',
+                _("%(days)s days left") % {"days": info.days_left},
+            )
+        if info.status == "valid":
+            return format_html(
+                "{}",
+                _("Valid until %(date)s") % {"date": info.not_after.date()},
+            )
+        return _("Unknown")
+
+    def changelist_view(self, request, extra_context=None):
+        for config in Config.objects.filter(is_active=True):
+            info = config.certificate_info()
+            if info.status == "expired":
+                messages.error(
+                    request,
+                    _(
+                        "The TicketBAI client certificate for %(config)s expired "
+                        "on %(date)s. Sending invoices will fail until it is renewed."
+                    )
+                    % {"config": config, "date": info.not_after.date()},
+                )
+            elif info.status == "expiring":
+                messages.warning(
+                    request,
+                    _(
+                        "The TicketBAI client certificate for %(config)s expires "
+                        "in %(days)s days, on %(date)s."
+                    )
+                    % {
+                        "config": config,
+                        "days": info.days_left,
+                        "date": info.not_after.date(),
+                    },
+                )
+        return super().changelist_view(request, extra_context)
 
 
 class InvoiceLines(admin.TabularInline):

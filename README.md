@@ -126,12 +126,60 @@ is meant to be edited in the Django admin:
 | Field | Description |
 | --- | --- |
 | `prefix`, `suffix` | Invoice series |
-| `pks12` | PKCS#12 (`.p12`) certificate used to sign the invoices |
+| `pks12` | PKCS#12 (`.p12`) **client certificate** used to sign and send the invoices |
 | `password` | Password of the certificate |
 | `logo` | Optional logo shown in the invoice PDF |
 | `is_active` | Only the active configuration is used |
 
 At least one active `Config` object is required before creating an invoice.
+
+### Certificate expiry monitoring
+
+The `pks12` file is the client certificate used for the mutual-TLS connection
+to the TicketBAI service.  When it expires, sending invoices fails with a TLS
+error even if the service itself is available.
+
+`django-ticketbai` can warn about this before it happens:
+
+- The `Config` admin lists the certificate state and shows a warning on the
+  changelist when the active certificate is expired or about to expire.
+- `send_invoice` checks the certificate before contacting the authority.  An
+  expired certificate is stored in `Invoice.errorxml` and no network request is
+  made.
+- The `check_ticketbai_certificate` management command can be run from cron or
+  a scheduler.
+
+Both settings are optional.  The warning threshold defaults to **30 days**.
+The alert recipients default to the email addresses in Django's `ADMINS`
+setting; set `TICKETBAI_CERTIFICATE_ALERT_EMAILS` explicitly to use another
+list, or to `[]` to disable email alerts:
+
+```python
+# Optional: defaults to 30.
+TICKETBAI_CERTIFICATE_WARNING_DAYS = 30
+
+# Optional: defaults to settings.ADMINS.
+TICKETBAI_CERTIFICATE_ALERT_EMAILS = ["operations@example.com"]
+```
+
+Run the check daily:
+
+```bash
+python manage.py check_ticketbai_certificate --fail-on expired
+```
+
+`--fail-on expired` exits with an error when the certificate has expired, so
+the monitoring system also sees the failure.  Use `--fail-on expiring` to fail
+for both expired and soon-to-expire certificates.  Add `--email` to notify
+additional addresses, or `--warn-days` to override the configured threshold.
+
+Example cron entry:
+
+```cron
+0 8 * * * cd /path/to/project && python manage.py check_ticketbai_certificate --fail-on expired
+```
+
+The command never prints or stores the certificate password or private key.
 
 ## Usage
 

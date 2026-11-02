@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "django-ticketbai"
-version = "2.6"
+version = "2.7"
 description = "django-ticketbai allows to create, manage, store and send TicketBai invoices to the Basque tax authorities."
 readme = { file = "README.md", content-type = "text/markdown" }
 license = "MIT"

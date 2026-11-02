@@ -117,6 +117,29 @@ def store_pdf(tbai, invoice, tbai_invoice, config):
 
 
 def send_invoice(tbai, invoice, config):
+    certificate_info = getattr(config, "certificate_info", None)
+    if callable(certificate_info):
+        info = certificate_info()
+        if info.status == "expired":
+            message = "TicketBAI client certificate expired on {}".format(
+                info.not_after.date()
+            )
+            invoice.errorxml = message
+            invoice.save(update_fields=["errorxml"])
+            logger.error(
+                "TicketBAI certificate expired for invoice %s (config %s, %s)",
+                invoice.pk,
+                config.pk,
+                info.not_after.date(),
+            )
+            return invoice
+        if info.status == "expiring":
+            logger.warning(
+                "TicketBAI certificate for config %s expires in %s days",
+                config.pk,
+                info.days_left,
+            )
+
     try:
         result = tbai.send(
             invoice.signedxml,
@@ -131,6 +154,7 @@ def send_invoice(tbai, invoice, config):
 
     if result["status"] == 200:
         invoice.csv_code = result["CSV"]
+        invoice.errorxml = None
     else:
         logger.error(
             "TicketBAI send failed for invoice %s: %s",

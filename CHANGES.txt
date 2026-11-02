@@ -1,3 +1,15 @@
+2.7 (unreleased)
+----------------
+
+- Detect expired and expiring TicketBAI client certificates.  The Django admin
+  shows the certificate state, the new ``check_ticketbai_certificate`` command
+  can notify operators by email, and ``send_invoice`` refuses to contact the
+  authority when the certificate has expired.  Alert emails default to
+  Django's ``ADMINS`` setting when no dedicated recipient list is configured.
+- Clear ``Invoice.errorxml`` after a successful send so a retry does not keep
+  showing an old error.
+
+
 2.6 (unreleased)
 ----------------
 
