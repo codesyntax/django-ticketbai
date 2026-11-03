@@ -1,3 +1,14 @@
+2.8 (unreleased)
+----------------
+
+- Add Invoice admin actions to retry pending TicketBAI sends, regenerate
+  missing PDFs from the signed invoice, and resend the ticket email to the
+  invoice recipient.  Retrying is idempotent, follows invoice order and stops
+  when the certificate is unusable or the authority rejects an invoice.
+- Add TicketBAI status and PDF filters/columns to the invoice changelist and
+  extend its search fields with email, TicketBAI code and CSV.
+
+
 2.7 (unreleased)
 ----------------
 
